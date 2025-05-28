@@ -52,7 +52,6 @@ const LoginFormMUI = () => {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const validateForm = () => {
@@ -114,54 +113,6 @@ const LoginFormMUI = () => {
       }
     }
   };
-
-  // Replace the submitted section since we're now using real navigation
-  if (submitted) {
-    return (
-      <ThemeProvider theme={theme}>
-        <Box sx={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          minHeight: '100vh',
-          bgcolor: '#f5f5f5',
-          p: 2
-        }}>
-          <Card sx={{ maxWidth: 400, width: '100%', boxShadow: 3, textAlign: 'center' }}>
-            <CardContent sx={{ p: 4 }}>
-              <Box sx={{ 
-                width: 60, 
-                height: 60, 
-                bgcolor: 'success.light', 
-                borderRadius: '50%', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                mb: 2,
-                mx: 'auto'
-              }}>
-                <CheckCircle color="success" fontSize="large" />
-              </Box>
-              <Typography variant="h5" fontWeight="bold" gutterBottom>
-                Login Successful!
-              </Typography>
-              <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-                Welcome back, {formData.email}
-              </Typography>
-              <Button 
-                variant="contained" 
-                fullWidth 
-                size="large"
-                onClick={() => navigate('/dashboard')}
-              >
-                Go to Dashboard
-              </Button>
-            </CardContent>
-          </Card>
-        </Box>
-      </ThemeProvider>
-    );
-  }
 
   return (
     <ThemeProvider theme={theme}>

@@ -7,25 +7,20 @@ const API_URL = 'http://localhost:3000/api';
  * @returns {Promise<{token: string, user: object}>} - Auth token and user data
  */
 export const login = async (email, password) => {
-  try {
-    const response = await fetch(`${API_URL}/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-    
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || 'Authentication failed');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Login fetch error:", error);
-    throw error;
+  const response = await fetch(`${API_URL}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  });
+  
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Authentication failed');
   }
+
+  return await response.json();
 };
 
 /**
@@ -33,28 +28,24 @@ export const login = async (email, password) => {
  * @returns {Promise<Array>} - Array of users
  */
 export const getUsers = async () => {
-  try {
-    const token = localStorage.getItem('authToken');
-    const response = await fetch(`${API_URL}/users`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
+  const token = localStorage.getItem('authToken');
+  const response = await fetch(`${API_URL}/users`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
 
-    if (!response.ok) {
-      if (response.status === 401) {
-        // Token expired or invalid
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('user');
-        throw new Error('Session expired. Please login again.');
-      }
-      throw new Error('Failed to fetch users');
+  if (!response.ok) {
+    if (response.status === 401) {
+      // Token expired or invalid
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('user');
+      throw new Error('Session expired. Please login again.');
     }
-
-    return await response.json();
-  } catch (error) {
-    throw error;
+    throw new Error('Failed to fetch users');
   }
+
+  return await response.json();
 };
 
 /**
@@ -63,22 +54,18 @@ export const getUsers = async () => {
  * @returns {Promise<object>} - User data
  */
 export const getUserById = async (id) => {
-  try {
-    const token = localStorage.getItem('authToken');
-    const response = await fetch(`${API_URL}/users/${id}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
+  const token = localStorage.getItem('authToken');
+  const response = await fetch(`${API_URL}/users/${id}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch user');
-    }
-
-    return await response.json();
-  } catch (error) {
-    throw error;
+  if (!response.ok) {
+    throw new Error('Failed to fetch user');
   }
+
+  return await response.json();
 };
 
 /**
@@ -87,26 +74,22 @@ export const getUserById = async (id) => {
  * @returns {Promise<object>} - Created user
  */
 export const createUser = async (userData) => {
-  try {
-    const token = localStorage.getItem('authToken');
-    const response = await fetch(`${API_URL}/users`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify(userData),
-    });
+  const token = localStorage.getItem('authToken');
+  const response = await fetch(`${API_URL}/users`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(userData),
+  });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(errorText || 'Failed to create user');
-    }
-
-    return response.ok;
-  } catch (error) {
-    throw error;
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(errorText || 'Failed to create user');
   }
+
+  return response.ok;
 };
 
 /**
@@ -116,25 +99,21 @@ export const createUser = async (userData) => {
  * @returns {Promise<object>} - Updated user
  */
 export const updateUser = async (id, userData) => {
-  try {
-    const token = localStorage.getItem('authToken');
-    const response = await fetch(`${API_URL}/users/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify(userData),
-    });
+  const token = localStorage.getItem('authToken');
+  const response = await fetch(`${API_URL}/users/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(userData),
+  });
 
-    if (!response.ok) {
-      throw new Error('Failed to update user');
-    }
-
-    return response.ok;
-  } catch (error) {
-    throw error;
+  if (!response.ok) {
+    throw new Error('Failed to update user');
   }
+
+  return response.ok;
 };
 
 /**
@@ -143,23 +122,19 @@ export const updateUser = async (id, userData) => {
  * @returns {Promise<boolean>} - Success status
  */
 export const deleteUser = async (id) => {
-  try {
-    const token = localStorage.getItem('authToken');
-    const response = await fetch(`${API_URL}/users/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
+  const token = localStorage.getItem('authToken');
+  const response = await fetch(`${API_URL}/users/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
 
-    if (!response.ok) {
-      throw new Error('Failed to delete user');
-    }
-
-    return response.ok;
-  } catch (error) {
-    throw error;
+  if (!response.ok) {
+    throw new Error('Failed to delete user');
   }
+
+  return response.ok;
 };
 
 /**
@@ -193,26 +168,21 @@ export const getCurrentUser = () => {
  * @returns {Promise<object>} - Created user
  */
 export const register = async (userData) => {
-  try {
-    const response = await fetch(`${API_URL}/users`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    });
+  const response = await fetch(`${API_URL}/users`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify(userData),
+  });
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || 'Registration failed');
-    }
-
-    return { success: true };
-  } catch (error) {
-    console.error("Registration error:", error);
-    throw error;
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Registration failed');
   }
+
+  return { success: true };
 };
 
 /**
@@ -229,7 +199,7 @@ export const isTokenExpired = () => {
     
     // Check if token has expired
     return payload.exp < Date.now() / 1000;
-  } catch (error) {
+  } catch {
     return true;
   }
 };

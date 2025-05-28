@@ -28,7 +28,10 @@ jobs:
       - name: Lint
         run: npm run lint || echo "Lint failed"
         continue-on-error: true
-
+        
+      - name: Run unit tests
+        run: npm test
+        
       - name: Build Vite project
         run: npm run build
 
