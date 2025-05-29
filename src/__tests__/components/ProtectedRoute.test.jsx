@@ -27,7 +27,7 @@ describe('ProtectedRoute Component', () => {
     authService.isAuthenticated.mockReturnValue(true);
 
     const { getByTestId } = render(
-      <MemoryRouter>
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ProtectedRoute />
       </MemoryRouter>
     );
@@ -41,7 +41,7 @@ describe('ProtectedRoute Component', () => {
     authService.isAuthenticated.mockReturnValue(false);
 
     const { getByTestId } = render(
-      <MemoryRouter>
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ProtectedRoute />
       </MemoryRouter>
     );
